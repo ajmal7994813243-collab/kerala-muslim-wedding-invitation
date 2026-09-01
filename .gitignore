@@ -1,0 +1,14 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+**/*firebase-adminsdk*.json
+**/serviceAccount*.json
+
+# Build files
+node_modules/
+.next/
+*.tsbuildinfo
+
+# Archives
+*.zip
