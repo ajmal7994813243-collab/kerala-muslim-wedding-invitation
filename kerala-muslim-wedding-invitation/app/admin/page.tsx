@@ -119,6 +119,8 @@ function Dashboard() {
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState("");
   const [videoCaption, setVideoCaption] = useState("");
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoPreview, setVideoPreview] = useState("");
 
   const [addingPhoto, setAddingPhoto] = useState(false);
   const [addingVideo, setAddingVideo] = useState(false);
@@ -455,8 +457,8 @@ function Dashboard() {
   ========================================================= */
 
   async function addVideo() {
-    if (!videoUrl.trim()) {
-      setMessage("Please enter a video URL.");
+    if (!videoFile && !videoUrl.trim()) {
+      setMessage("Please choose a video from your device.");
       return;
     }
 
@@ -464,11 +466,47 @@ function Dashboard() {
       setAddingVideo(true);
       setMessage("");
 
+      let finalUrl = videoUrl.trim();
+
+      if (videoFile) {
+        if (!videoFile.type.startsWith("video/")) {
+          throw new Error("Please choose a video file.");
+        }
+
+        // Keep uploads practical for the admin panel.
+        if (videoFile.size > 100 * 1024 * 1024) {
+          throw new Error("Video must be 100 MB or smaller.");
+        }
+
+        const formData = new FormData();
+        formData.append("file", videoFile);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+        formData.append("folder", "ajmal-irfana/videos");
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.secure_url) {
+          throw new Error(
+            result.error?.message || "Cloudinary video upload failed."
+          );
+        }
+
+        finalUrl = result.secure_url;
+      }
+
       await api("/api/admin/media", {
         method: "POST",
         body: JSON.stringify({
           type: "video",
-          url: videoUrl.trim(),
+          url: finalUrl,
           title: videoTitle.trim(),
           caption: videoCaption.trim(),
           order: data.videos.length,
@@ -478,15 +516,44 @@ function Dashboard() {
       setVideoUrl("");
       setVideoTitle("");
       setVideoCaption("");
+      setVideoFile(null);
+      setVideoPreview("");
 
       await load();
 
-      setMessage("Video added successfully.");
+      setMessage("Video uploaded successfully.");
     } catch (error: any) {
       setMessage(error.message);
     } finally {
       setAddingVideo(false);
     }
+  }
+
+  function handleVideoFileChange(file: File | null) {
+    setVideoFile(file);
+
+    if (!file) {
+      setVideoPreview("");
+      return;
+    }
+
+    if (!file.type.startsWith("video/")) {
+      setMessage("Please choose a video file.");
+      setVideoFile(null);
+      setVideoPreview("");
+      return;
+    }
+
+    if (file.size > 100 * 1024 * 1024) {
+      setMessage("Video must be 100 MB or smaller.");
+      setVideoFile(null);
+      setVideoPreview("");
+      return;
+    }
+
+    setVideoPreview(URL.createObjectURL(file));
+    setVideoUrl("");
+    setMessage("");
   }
 
   async function deleteVideo(id: string) {
@@ -1197,38 +1264,70 @@ function Dashboard() {
                   </h2>
 
                   <p className="mt-1 text-sm text-stone-500">
-                    Paste a direct video URL below.
+                    Choose a video from your phone or computer. It will upload automatically.
                   </p>
 
                 </div>
 
                 <div className="grid gap-5">
 
-                  <Field
-                    label="Video URL"
-                    placeholder="https://example.com/wedding-video.mp4"
-                    value={videoUrl}
-                    onChange={setVideoUrl}
-                  />
+                  <label className="grid gap-2 text-sm">
+                    <span className="font-medium text-[#35171d]">
+                      Choose Video
+                    </span>
 
-                  {videoUrl.trim() && (
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={(event) =>
+                        handleVideoFileChange(
+                          event.target.files?.[0] || null
+                        )
+                      }
+                      className="w-full rounded-2xl border border-dashed border-[#d8c2b7] bg-white px-4 py-4 text-sm text-[#35171d] outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-[#9b1e30] file:px-5 file:py-2 file:text-sm file:text-white hover:border-[#9b1e30] focus:border-[#9b1e30] focus:ring-4 focus:ring-[#9b1e30]/10"
+                    />
+
+                    <span className="text-xs text-stone-500">
+                      MP4, MOV, WEBM • max 100 MB
+                    </span>
+                  </label>
+
+                  {(videoPreview || videoUrl.trim()) && (
                     <div>
-
                       <p className="mb-2 text-xs uppercase tracking-[0.25em] text-gold">
                         Preview
                       </p>
 
-                      <div className="overflow-hidden rounded-2xl bg-black">
+                      <div className="mx-auto max-w-sm overflow-hidden rounded-3xl bg-black">
                         <video
-                          src={videoUrl}
+                          src={videoPreview || videoUrl}
                           controls
+                          playsInline
                           preload="metadata"
-                          className="max-h-[450px] w-full"
+                          className="aspect-[9/16] w-full object-cover"
                         />
                       </div>
-
                     </div>
                   )}
+
+                  <details className="rounded-2xl border border-[#eadbd3] bg-white p-4">
+                    <summary className="cursor-pointer text-sm font-medium text-[#35171d]">
+                      Or use a video URL
+                    </summary>
+
+                    <div className="mt-4">
+                      <Field
+                        label="Video URL"
+                        placeholder="https://example.com/wedding-video.mp4"
+                        value={videoUrl}
+                        onChange={(value) => {
+                          setVideoUrl(value);
+                          setVideoFile(null);
+                          setVideoPreview("");
+                        }}
+                      />
+                    </div>
+                  </details>
 
                   <div className="grid gap-5 md:grid-cols-2">
 
@@ -1255,7 +1354,7 @@ function Dashboard() {
                   >
                     {addingVideo
                       ? "Adding..."
-                      : "＋ Add Video"}
+                      : "＋ Upload Video"}
                   </button>
 
                 </div>

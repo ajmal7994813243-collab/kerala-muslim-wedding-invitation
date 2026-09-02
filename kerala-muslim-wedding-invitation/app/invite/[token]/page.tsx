@@ -4,6 +4,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import Countdown from "../../../components/Countdown";
 import InvitationOpening from "../../../components/InvitationOpening";
 import Butterflies from "../../../components/Butterflies";
+import ReelsGallery from "../../../components/ReelsGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -430,55 +431,30 @@ export default async function Invitation({
       )}
 
 
-      {/* =====================================================
-          VIDEOS
-      ===================================================== */}
+          
+     {/* =====================================================
+    VIDEOS / REELS
+===================================================== */}
 
-      {videos.length > 0 && (
+{videos.length > 0 && (
 
-        <section className="video-section">
+  <section className="video-section">
 
-          <div className="section-heading light reveal-up">
+    <div className="section-heading light reveal-up">
 
-            <p>MOVING MEMORIES</p>
+      <p>MOVING MEMORIES</p>
 
-            <h2>
-              Our Story
-            </h2>
+      <h2>
+        Our Story
+      </h2>
 
-          </div>
+    </div>
 
-          <div className="video-grid">
+    <ReelsGallery videos={videos} />
 
-            {videos.map((video: any) => (
+  </section>
 
-              <div
-                key={video.id}
-                className="video-card reveal-up"
-              >
-
-                <video
-                  src={video.url}
-                  controls
-                  playsInline
-                  preload="metadata"
-                />
-
-                {video.caption && (
-                  <p>
-                    {video.caption}
-                  </p>
-                )}
-
-              </div>
-
-            ))}
-
-          </div>
-
-        </section>
-      )}
-
+)}
 
       {/* =====================================================
           VENUE
