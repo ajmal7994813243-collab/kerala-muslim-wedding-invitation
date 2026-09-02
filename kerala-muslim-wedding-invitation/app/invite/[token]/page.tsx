@@ -205,95 +205,116 @@ export default async function Invitation({
 
 
       {/* =====================================================
-          PARENTS
-      ===================================================== */}
+    PARENTS / THE FAMILIES
+===================================================== */}
 
-      {(wedding.groomFather ||
-        wedding.groomMother ||
-        wedding.brideFather ||
-        wedding.brideMother ||
-        wedding.groomParents ||
-        wedding.brideParents) && (
+{(
+  wedding.groomFather ||
+  wedding.groomMother ||
+  wedding.brideFather ||
+  wedding.brideMother ||
+  wedding.groomParents ||
+  wedding.brideParents
+) && (
+  <section className="families-section">
 
-        <section className="parents-section">
+    <div className="families-heading reveal-up">
 
-          <div className="section-heading light reveal-up">
+      <div className="families-ornament">
+        <span />
+        <b>✦</b>
+        <span />
+      </div>
 
-            <p>WITH THEIR FAMILIES</p>
+      <p>WITH THEIR FAMILIES</p>
 
-            <h2>
-              The Families
-            </h2>
+      <h2>The Families</h2>
 
-          </div>
+      <div className="families-subline">
+        <i />
+        <span>✧</span>
+        <i />
+      </div>
 
-          <div className="parents-grid">
-
-            <div className="parent-card reveal-left">
-
-              <span className="parent-label">
-                Groom&apos;s Family
-              </span>
-
-              <div className="parent-symbol">
-                ✦
-              </div>
-
-              {wedding.groomFather && (
-                <h3>
-                  {wedding.groomFather}
-                </h3>
-              )}
-
-              {wedding.groomMother && (
-                <p>
-                  {wedding.groomMother}
-                </p>
-              )}
-
-              {wedding.groomParents && (
-                <p>
-                  {wedding.groomParents}
-                </p>
-              )}
-
-            </div>
+    </div>
 
 
-            <div className="parent-card reveal-right">
+    <div className="families-grid">
 
-              <span className="parent-label">
-                Bride&apos;s Family
-              </span>
+      {/* GROOM FAMILY */}
 
-              <div className="parent-symbol">
-                ✦
-              </div>
+      <div className="family-column reveal-left">
 
-              {wedding.brideFather && (
-                <h3>
-                  {wedding.brideFather}
-                </h3>
-              )}
+        <span className="family-side-label">
+          GROOM&apos;S FAMILY
+        </span>
 
-              {wedding.brideMother && (
-                <p>
-                  {wedding.brideMother}
-                </p>
-              )}
+        <div className="family-names">
 
-              {wedding.brideParents && (
-                <p>
-                  {wedding.brideParents}
-                </p>
-              )}
+          {wedding.groomFather && (
+            <h3>{wedding.groomFather}</h3>
+          )}
 
-            </div>
+          {wedding.groomMother && (
+            <p>{wedding.groomMother}</p>
+          )}
 
-          </div>
+          {wedding.groomParents && (
+            <small>{wedding.groomParents}</small>
+          )}
 
-        </section>
-      )}
+        </div>
+
+        <div className="family-bottom-ornament">
+          ✦
+        </div>
+
+      </div>
+
+
+      {/* CENTER DIVIDER */}
+
+      <div className="families-center-divider">
+        <span />
+        <b>❦</b>
+        <span />
+      </div>
+
+
+      {/* BRIDE FAMILY */}
+
+      <div className="family-column reveal-right">
+
+        <span className="family-side-label">
+          BRIDE&apos;S FAMILY
+        </span>
+
+        <div className="family-names">
+
+          {wedding.brideFather && (
+            <h3>{wedding.brideFather}</h3>
+          )}
+
+          {wedding.brideMother && (
+            <p>{wedding.brideMother}</p>
+          )}
+
+          {wedding.brideParents && (
+            <small>{wedding.brideParents}</small>
+          )}
+
+        </div>
+
+        <div className="family-bottom-ornament">
+          ✦
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+)}
 
 
       {/* =====================================================

@@ -3739,3 +3739,282 @@ select {
     transition-duration: .01ms !important;
   }
 }
+/* =========================================================
+   PREMIUM FAMILIES SECTION
+========================================================= */
+
+.families-section {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 8% 135px;
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(255, 220, 150, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #8f1729 0%,
+      #831525 48%,
+      #74111f 100%
+    );
+  color: #fff;
+}
+
+.families-section::before,
+.families-section::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(230, 190, 115, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.families-section::before {
+  top: -220px;
+  left: -180px;
+}
+
+.families-section::after {
+  right: -180px;
+  bottom: -220px;
+}
+
+
+/* HEADING */
+
+.families-heading {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.families-heading p {
+  margin: 18px 0 16px;
+  font-size: 10px;
+  letter-spacing: 0.48em;
+  color: #dfbd76;
+  text-transform: uppercase;
+}
+
+.families-heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  color: #fffaf1;
+}
+
+.families-ornament,
+.families-subline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.families-ornament span,
+.families-subline i {
+  width: 70px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(224, 190, 117, 0.8),
+    transparent
+  );
+}
+
+.families-ornament b {
+  color: #dfbd76;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.families-subline {
+  margin-top: 24px;
+}
+
+.families-subline i {
+  width: 38px;
+}
+
+.families-subline span {
+  color: #dfbd76;
+  font-size: 12px;
+}
+
+
+/* GRID */
+
+.families-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items: stretch;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+
+/* FAMILY COLUMN */
+
+.family-column {
+  position: relative;
+  min-height: 300px;
+  padding: 28px 48px 44px;
+  text-align: center;
+}
+
+.family-column::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 1px solid rgba(225, 192, 123, 0.30);
+  border-bottom: 1px solid rgba(225, 192, 123, 0.30);
+  opacity: 0.7;
+}
+
+.family-side-label {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 58px;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: #e0c083;
+}
+
+.family-side-label::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 30px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: #c9a15f;
+}
+
+
+/* NAMES */
+
+.family-names {
+  position: relative;
+}
+
+.family-names h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 3.2vw, 50px);
+  line-height: 1.1;
+  font-weight: 500;
+  color: #fffdf8;
+  letter-spacing: -0.025em;
+}
+
+.family-names p {
+  margin: 12px 0 0;
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 244, 225, 0.82);
+  text-transform: uppercase;
+}
+
+.family-names small {
+  display: block;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255, 239, 213, 0.62);
+}
+
+
+/* BOTTOM ORNAMENT */
+
+.family-bottom-ornament {
+  margin-top: 48px;
+  color: #d7b66d;
+  font-size: 15px;
+}
+
+
+/* CENTER */
+
+.families-center-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.families-center-divider span {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(220, 186, 112, 0.55),
+    transparent
+  );
+}
+
+.families-center-divider b {
+  color: #e1bf77;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .families-section {
+    padding: 85px 22px 95px;
+  }
+
+  .families-heading {
+    margin-bottom: 55px;
+  }
+
+  .families-heading h2 {
+    font-size: 48px;
+  }
+
+  .families-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .family-column {
+    min-height: 240px;
+    padding: 30px 22px 36px;
+  }
+
+  .families-center-divider {
+    height: 55px;
+    flex-direction: row;
+  }
+
+  .families-center-divider span {
+    width: auto;
+    height: 1px;
+  }
+
+  .family-side-label {
+    margin-bottom: 45px;
+  }
+
+  .family-names h3 {
+    font-size: 36px;
+  }
+
+  .family-names p {
+    font-size: 14px;
+  }
+}
