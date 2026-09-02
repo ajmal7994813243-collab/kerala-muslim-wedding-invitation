@@ -4018,3 +4018,359 @@ select {
     font-size: 14px;
   }
 }
+
+
+/* =========================================================
+   FINAL PREMIUM FAMILIES SECTION
+========================================================= */
+
+.families-section {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 7% 135px;
+  color: #fffaf2;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(230, 194, 120, .08), transparent 30%),
+    linear-gradient(180deg, #961a2d 0%, #861527 52%, #74111f 100%);
+}
+
+.families-section::before,
+.families-section::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(226, 191, 119, .12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.families-section::before {
+  top: -230px;
+  left: -180px;
+}
+
+.families-section::after {
+  right: -190px;
+  bottom: -230px;
+}
+
+.families-heading {
+  position: relative;
+  z-index: 2;
+  margin: 0 auto 78px;
+  max-width: 900px;
+}
+
+.families-ornament,
+.families-subline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.families-ornament span,
+.families-subline i {
+  display: block;
+  width: 76px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225, 190, 116, .82));
+}
+
+.families-ornament span:last-child {
+  background: linear-gradient(90deg, rgba(225, 190, 116, .82), transparent);
+}
+
+.families-ornament b {
+  color: #e0be77;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.families-heading p {
+  margin: 18px 0 15px;
+  color: #e1bf78;
+  font-size: 10px;
+  letter-spacing: .48em;
+  text-transform: uppercase;
+}
+
+.families-heading h2 {
+  margin: 0;
+  color: #fffaf2;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 6vw, 84px);
+  line-height: .98;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+
+.families-subline {
+  margin-top: 24px;
+}
+
+.families-subline i {
+  width: 38px;
+  background: rgba(225, 190, 116, .6);
+}
+
+.families-subline span {
+  color: #e0be77;
+  font-size: 12px;
+}
+
+.families-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 78px 1fr;
+  align-items: stretch;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.family-column {
+  position: relative;
+  min-height: 330px;
+  padding: 34px 46px 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.family-column::before,
+.family-column::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(225, 190, 116, .38),
+    transparent
+  );
+}
+
+.family-column::before {
+  top: 0;
+}
+
+.family-column::after {
+  bottom: 0;
+}
+
+.family-side-label {
+  display: inline-block;
+  color: #e1bf78;
+  font-size: 10px;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+}
+
+.family-side-label::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 1px;
+  margin: 17px auto 0;
+  background: #d0a85e;
+}
+
+.family-names {
+  margin-top: 54px;
+}
+
+.family-names h3 {
+  margin: 0;
+  color: #fffdf8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(34px, 3.4vw, 54px);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -.02em;
+}
+
+.family-names p {
+  margin: 13px 0 0;
+  color: rgba(255, 244, 224, .84);
+  font-size: 16px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.family-names small {
+  display: block;
+  max-width: 420px;
+  margin-top: 15px;
+  color: rgba(255, 239, 213, .60);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.family-bottom-ornament {
+  margin-top: 46px;
+  color: #e0be77;
+  font-size: 14px;
+}
+
+.families-center-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+.families-center-divider span {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(225, 190, 116, .62),
+    transparent
+  );
+}
+
+.families-center-divider b {
+  color: #e4c37c;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+/* Prevent old parent-card styles from affecting the new markup */
+.families-section .parent-card,
+.families-section .parent-label,
+.families-section .parent-symbol {
+  all: unset;
+}
+
+/* =========================================================
+   PREMIUM REELS / VIDEOS
+========================================================= */
+
+.video-section {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 20px 105px;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(185, 147, 90, .08), transparent 24%),
+    #12070a;
+}
+
+.video-section .section-heading {
+  position: relative;
+  z-index: 2;
+}
+
+.video-section .section-heading h2 {
+  color: #fffaf3;
+}
+
+.video-section .video-grid {
+  max-width: 900px;
+  margin: 55px auto 0;
+}
+
+.video-section .video-card {
+  position: relative;
+  overflow: hidden;
+  padding: 12px;
+  border: 1px solid rgba(213, 177, 103, .20);
+  border-radius: 30px;
+  background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+}
+
+.video-section .video-card video {
+  display: block;
+  width: min(100%, 430px);
+  aspect-ratio: 9 / 16;
+  max-height: 70vh;
+  margin: 0 auto;
+  object-fit: cover;
+  border: 0;
+  border-radius: 22px;
+  background: #000;
+}
+
+.video-section .video-card p {
+  margin: 16px auto 4px;
+  color: rgba(255,255,255,.72);
+}
+
+/* ReelsGallery component */
+.video-section .snap-reels,
+.video-section .reels-gallery {
+  scrollbar-width: none;
+}
+
+.video-section .snap-reels::-webkit-scrollbar,
+.video-section .reels-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .families-section {
+    padding: 88px 20px 98px;
+  }
+
+  .families-heading {
+    margin-bottom: 55px;
+  }
+
+  .families-heading h2 {
+    font-size: 48px;
+  }
+
+  .families-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .family-column {
+    min-height: 255px;
+    padding: 30px 20px 36px;
+  }
+
+  .families-center-divider {
+    height: 54px;
+    flex-direction: row;
+  }
+
+  .families-center-divider span {
+    width: auto;
+    height: 1px;
+  }
+
+  .family-names {
+    margin-top: 42px;
+  }
+
+  .family-names h3 {
+    font-size: 36px;
+  }
+
+  .family-names p {
+    font-size: 13px;
+  }
+
+  .video-section {
+    padding: 85px 14px 90px;
+  }
+
+  .video-section .video-card {
+    padding: 8px;
+    border-radius: 24px;
+  }
+
+  .video-section .video-card video {
+    width: 100%;
+    max-height: 75vh;
+    border-radius: 18px;
+  }
+}

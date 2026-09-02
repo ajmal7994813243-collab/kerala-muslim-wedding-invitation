@@ -204,8 +204,8 @@ export default async function Invitation({
       </section>
 
 
-      {/* =====================================================
-    PARENTS / THE FAMILIES
+     {/* =====================================================
+    THE FAMILIES
 ===================================================== */}
 
 {(
@@ -237,7 +237,6 @@ export default async function Invitation({
       </div>
 
     </div>
-
 
     <div className="families-grid">
 
@@ -272,12 +271,16 @@ export default async function Invitation({
       </div>
 
 
-      {/* CENTER DIVIDER */}
+      {/* CENTER ORNAMENT */}
 
       <div className="families-center-divider">
+
         <span />
+
         <b>❦</b>
+
         <span />
+
       </div>
 
 
