@@ -101,6 +101,7 @@ function Dashboard() {
 
   const [guests, setGuests] = useState<any[]>([]);
   const [versions, setVersions] = useState<any[]>([]);
+  const [guestSearch, setGuestSearch] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -254,6 +255,31 @@ function Dashboard() {
       await load();
 
       setMessage("Guest invitation created.");
+    } catch (error: any) {
+      setMessage(error.message);
+    }
+  }
+
+
+  async function deleteGuest(id: string, name: string) {
+    if (
+      !window.confirm(
+        `Remove "${name}" and revoke their invitation link?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setMessage("");
+
+      await api(`/api/admin/guests/${id}`, {
+        method: "DELETE",
+      });
+
+      await load();
+
+      setMessage("Guest removed successfully.");
     } catch (error: any) {
       setMessage(error.message);
     }
@@ -1340,59 +1366,108 @@ function Dashboard() {
 
               </div>
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-8">
+                <div className="mb-6">
+                  <Field
+                    label="Search Guests"
+                    placeholder="Search by guest name..."
+                    value={guestSearch}
+                    onChange={setGuestSearch}
+                  />
+                </div>
 
-                {guests.length === 0 && (
-                  <EmptyState text="No guests added yet." />
-                )}
+                {(() => {
+                  const query = guestSearch.trim().toLowerCase();
 
-                {guests.map((guest) => (
+                  const filteredGuests = guests.filter((guest) =>
+                    String(guest.name || "")
+                      .toLowerCase()
+                      .includes(query)
+                  );
 
-                  <div
-                    key={guest.id}
-                    className="rounded-3xl border border-[#eadbd3] p-5"
-                  >
+                  if (guests.length === 0) {
+                    return (
+                      <EmptyState text="No guests added yet." />
+                    );
+                  }
 
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  if (filteredGuests.length === 0) {
+                    return (
+                      <EmptyState text="No matching guests found." />
+                    );
+                  }
 
-                      <div>
-
-                        <h3 className="font-serif text-2xl text-wine">
-                          {guest.name}
-                        </h3>
-
-                        <p className="mt-1 text-sm text-stone-500">
-                          Version: {guest.versionId}
-                        </p>
-
-                      </div>
-
-                      {guest.token && (
-                        <button
-                          onClick={() =>
-                            navigator.clipboard.writeText(
-                              `${window.location.origin}/invite/${guest.token}`
-                            )
-                          }
-                          className="rounded-full border border-wine px-5 py-2 text-sm text-wine"
+                  return (
+                    <div className="space-y-4">
+                      {filteredGuests.map((guest) => (
+                        <div
+                          key={guest.id}
+                          className="rounded-3xl border border-[#eadbd3] p-5"
                         >
-                          Copy Link
-                        </button>
-                      )}
+                          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-3">
+                                <h3 className="font-serif text-2xl text-wine">
+                                  {guest.name}
+                                </h3>
 
+                                {guest.status === "revoked" && (
+                                  <span className="rounded-full bg-red-50 px-3 py-1 text-xs text-red-700">
+                                    Revoked
+                                  </span>
+                                )}
+                              </div>
+
+                              <p className="mt-1 text-sm text-stone-500">
+                                Version: {guest.versionId}
+                              </p>
+
+                              {guest.phone && (
+                                <p className="mt-1 text-sm text-stone-500">
+                                  {guest.phone}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                              {guest.token && guest.status !== "revoked" && (
+                                <button
+                                  onClick={() =>
+                                    navigator.clipboard.writeText(
+                                      `${window.location.origin}/invite/${guest.token}`
+                                    )
+                                  }
+                                  className="rounded-full border border-wine px-5 py-2 text-sm text-wine"
+                                >
+                                  Copy Link
+                                </button>
+                              )}
+
+                              <button
+                                onClick={() =>
+                                  deleteGuest(
+                                    guest.id,
+                                    guest.name || "this guest"
+                                  )
+                                }
+                                className="rounded-full border border-red-200 px-5 py-2 text-sm text-red-700 transition hover:bg-red-50"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+
+                          {guest.token && guest.status !== "revoked" && (
+                            <p className="mt-4 break-all rounded-xl bg-[#fff8f5] p-3 text-sm text-stone-600">
+                              {window.location.origin}/invite/
+                              {guest.token}
+                            </p>
+                          )}
+                        </div>
+                      ))}
                     </div>
-
-                    {guest.token && (
-                      <p className="mt-4 break-all rounded-xl bg-[#fff8f5] p-3 text-sm text-stone-600">
-                        {window.location.origin}/invite/
-                        {guest.token}
-                      </p>
-                    )}
-
-                  </div>
-
-                ))}
-
+                  );
+                })()}
               </div>
 
             </>
