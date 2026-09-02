@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import AdminShell from "@/components/AdminShell";
-import { auth } from "@/lib/firebase-client";
+import { auth, storage } from "@/lib/firebase-client";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 type MediaItem = {
   id: string;
@@ -109,6 +110,8 @@ function Dashboard() {
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoTitle, setPhotoTitle] = useState("");
   const [photoCaption, setPhotoCaption] = useState("");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState("");
 
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState("");
@@ -304,8 +307,8 @@ function Dashboard() {
   ========================================================= */
 
   async function addPhoto() {
-    if (!photoUrl.trim()) {
-      setMessage("Please enter a photo URL.");
+    if (!photoFile && !photoUrl.trim()) {
+      setMessage("Please choose a photo from your device.");
       return;
     }
 
@@ -313,11 +316,46 @@ function Dashboard() {
       setAddingPhoto(true);
       setMessage("");
 
+      let finalUrl = photoUrl.trim();
+
+      if (photoFile) {
+        const user = auth.currentUser;
+
+        if (!user) {
+          throw new Error("Admin login required");
+        }
+
+        if (!photoFile.type.startsWith("image/")) {
+          throw new Error("Please choose an image file.");
+        }
+
+        if (photoFile.size > 10 * 1024 * 1024) {
+          throw new Error("Photo must be 10 MB or smaller.");
+        }
+
+        const safeName = photoFile.name.replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
+
+        const storageRef = ref(
+          storage,
+          `wedding/photos/${user.uid}/${Date.now()}-${safeName}`
+        );
+
+        const snapshot = await uploadBytes(
+          storageRef,
+          photoFile
+        );
+
+        finalUrl = await getDownloadURL(snapshot.ref);
+      }
+
       await api("/api/admin/media", {
         method: "POST",
         body: JSON.stringify({
           type: "image",
-          url: photoUrl.trim(),
+          url: finalUrl,
           title: photoTitle.trim(),
           caption: photoCaption.trim(),
           order: data.photos.length,
@@ -327,15 +365,37 @@ function Dashboard() {
       setPhotoUrl("");
       setPhotoTitle("");
       setPhotoCaption("");
+      setPhotoFile(null);
+      setPhotoPreview("");
 
       await load();
 
-      setMessage("Photo added successfully.");
+      setMessage("Photo uploaded successfully.");
     } catch (error: any) {
       setMessage(error.message);
     } finally {
       setAddingPhoto(false);
     }
+  }
+
+  function handlePhotoFileChange(file: File | null) {
+    setPhotoFile(file);
+
+    if (!file) {
+      setPhotoPreview("");
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setMessage("Please choose an image file.");
+      setPhotoFile(null);
+      setPhotoPreview("");
+      return;
+    }
+
+    setPhotoPreview(URL.createObjectURL(file));
+    setPhotoUrl("");
+    setMessage("");
   }
 
   async function deletePhoto(id: string) {
@@ -906,37 +966,68 @@ function Dashboard() {
                   </h2>
 
                   <p className="mt-1 text-sm text-stone-500">
-                    Paste a direct image URL below.
+                    Choose a photo from your phone or computer. It will upload automatically.
                   </p>
 
                 </div>
 
                 <div className="grid gap-5">
 
-                  <Field
-                    label="Photo URL"
-                    placeholder="https://example.com/wedding-photo.jpg"
-                    value={photoUrl}
-                    onChange={setPhotoUrl}
-                  />
+                  <label className="grid gap-2 text-sm">
+                    <span className="font-medium text-[#35171d]">
+                      Choose Photo
+                    </span>
 
-                  {photoUrl.trim() && (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) =>
+                        handlePhotoFileChange(
+                          event.target.files?.[0] || null
+                        )
+                      }
+                      className="w-full rounded-2xl border border-dashed border-[#d8c2b7] bg-white px-4 py-4 text-sm text-[#35171d] outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-[#9b1e30] file:px-5 file:py-2 file:text-sm file:text-white hover:border-[#9b1e30] focus:border-[#9b1e30] focus:ring-4 focus:ring-[#9b1e30]/10"
+                    />
+
+                    <span className="text-xs text-stone-500">
+                      JPG, PNG or WEBP • max 10 MB
+                    </span>
+                  </label>
+
+                  {(photoPreview || photoUrl.trim()) && (
                     <div>
-
                       <p className="mb-2 text-xs uppercase tracking-[0.25em] text-gold">
                         Preview
                       </p>
 
                       <div className="overflow-hidden rounded-2xl border bg-white">
                         <img
-                          src={photoUrl}
+                          src={photoPreview || photoUrl}
                           alt="Photo preview"
                           className="h-64 w-full object-cover"
                         />
                       </div>
-
                     </div>
                   )}
+
+                  <details className="rounded-2xl border border-[#eadbd3] bg-white p-4">
+                    <summary className="cursor-pointer text-sm font-medium text-[#35171d]">
+                      Or use an image URL
+                    </summary>
+
+                    <div className="mt-4">
+                      <Field
+                        label="Photo URL"
+                        placeholder="https://example.com/wedding-photo.jpg"
+                        value={photoUrl}
+                        onChange={(value) => {
+                          setPhotoUrl(value);
+                          setPhotoFile(null);
+                          setPhotoPreview("");
+                        }}
+                      />
+                    </div>
+                  </details>
 
                   <div className="grid gap-5 md:grid-cols-2">
 
@@ -963,7 +1054,7 @@ function Dashboard() {
                   >
                     {addingPhoto
                       ? "Adding..."
-                      : "＋ Add Photo"}
+                      : "＋ Upload Photo"}
                   </button>
 
                 </div>
