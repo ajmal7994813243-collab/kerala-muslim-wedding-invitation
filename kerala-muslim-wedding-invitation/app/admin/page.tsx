@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import AdminShell from "@/components/AdminShell";
-import { auth, storage } from "@/lib/firebase-client";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth } from "@/lib/firebase-client";
+
+const CLOUDINARY_CLOUD_NAME = "zxzsqxbx";
+const CLOUDINARY_UPLOAD_PRESET = "wedding_upload";
 
 type MediaItem = {
   id: string;
@@ -333,22 +335,28 @@ function Dashboard() {
           throw new Error("Photo must be 10 MB or smaller.");
         }
 
-        const safeName = photoFile.name.replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
+        const formData = new FormData();
+        formData.append("file", photoFile);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+        formData.append("folder", "ajmal-irfana/photos");
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
         );
 
-        const storageRef = ref(
-          storage,
-          `wedding/photos/${user.uid}/${Date.now()}-${safeName}`
-        );
+        const result = await response.json();
 
-        const snapshot = await uploadBytes(
-          storageRef,
-          photoFile
-        );
+        if (!response.ok || !result.secure_url) {
+          throw new Error(
+            result.error?.message || "Cloudinary photo upload failed."
+          );
+        }
 
-        finalUrl = await getDownloadURL(snapshot.ref);
+        finalUrl = result.secure_url;
       }
 
       await api("/api/admin/media", {
