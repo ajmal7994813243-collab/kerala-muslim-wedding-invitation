@@ -4772,3 +4772,114 @@ select {
     margin-top: 14px;
   }
 }
+/* =========================================================
+   PREMIUM COUPLE PORTRAIT
+========================================================= */
+
+.couple-portrait-section {
+  position: relative;
+  padding: 85px 24px 95px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(185, 147, 90, 0.12),
+      transparent 48%
+    ),
+    #fbf8f4;
+}
+
+.couple-portrait-frame {
+  position: relative;
+  width: min(760px, 94vw);
+  margin: 0 auto;
+
+  padding: 10px;
+
+  border: 1px solid rgba(185, 147, 90, 0.5);
+
+  background: rgba(255, 255, 255, 0.72);
+
+  box-shadow:
+    0 30px 80px rgba(70, 30, 35, 0.12),
+    0 0 0 8px rgba(255, 255, 255, 0.45);
+
+  overflow: hidden;
+}
+
+.couple-portrait-frame::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  z-index: 2;
+
+  border: 1px solid rgba(211, 174, 103, 0.32);
+
+  pointer-events: none;
+}
+
+.couple-portrait-image {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: cover;
+
+  filter:
+    saturate(0.96)
+    contrast(1.02)
+    brightness(1.01);
+
+  transition:
+    transform 1.6s ease,
+    filter 1.6s ease;
+}
+
+.couple-portrait-frame:hover .couple-portrait-image {
+  transform: scale(1.018);
+
+  filter:
+    saturate(1)
+    contrast(1.03)
+    brightness(1.02);
+}
+
+.couple-portrait-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -80px;
+
+  width: 70%;
+  height: 150px;
+
+  transform: translateX(-50%);
+
+  background: rgba(185, 147, 90, 0.16);
+
+  filter: blur(60px);
+
+  pointer-events: none;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .couple-portrait-section {
+    padding: 55px 14px 65px;
+  }
+
+  .couple-portrait-frame {
+    width: 100%;
+    padding: 6px;
+  }
+
+  .couple-portrait-frame::before {
+    inset: 14px;
+  }
+}

@@ -133,6 +133,23 @@ export default async function Invitation({
 
         </div>
       </section>
+      {/* =====================================================
+    COUPLE PORTRAIT
+===================================================== */}
+
+<section className="couple-portrait-section">
+  <div className="couple-portrait-frame reveal-up">
+
+    <img
+      src="/couple-portrait.png"
+      alt={`${wedding.groomName} and ${wedding.brideName}`}
+      className="couple-portrait-image"
+    />
+
+    <div className="couple-portrait-glow" />
+
+  </div>
+</section>
 
 
       {/* =====================================================
