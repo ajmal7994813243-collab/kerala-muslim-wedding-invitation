@@ -2364,8 +2364,8 @@ select {
   }
 }
 /* =========================================================
-   PREMIUM BUTTERFLIES
-   Floating through empty spaces + gentle word landing feel
+   REAL BUTTERFLY
+   Visible + Flying + Wing Flutter
 ========================================================= */
 
 .butterfly-layer {
@@ -2376,325 +2376,367 @@ select {
   pointer-events: none;
 }
 
-.premium-butterfly-flight {
+.real-butterfly {
   position: absolute;
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
+  width: 70px;
+  height: 70px;
   opacity: 0;
-  animation:
-    butterflyFlight
-    14s
-    cubic-bezier(.45,.05,.35,.95)
-    infinite;
-  will-change: transform, opacity;
-}
 
-.premium-butterfly {
-  position: relative;
-  display: block;
-  transform-origin: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+
   animation:
-    butterflyLand
-    14s
+    butterflyFlyAcross
+    15s
     ease-in-out
     infinite;
+}
+
+.real-butterfly img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  transform-origin: 50% 50%;
+
+  animation:
+    butterflyFlutter
+    .55s
+    ease-in-out
+    infinite;
+
   filter:
-    drop-shadow(0 3px 5px rgba(75, 20, 30, .18));
+    drop-shadow(0 4px 7px rgba(0, 0, 0, .18));
 }
 
-/* Body */
+/* positions */
 
-.butterfly-body {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  width: 2px;
-  height: 62%;
-  border-radius: 999px;
-  background: #70402f;
-  transform: translateX(-50%);
-  z-index: 3;
+.butterfly-one {
+  left: -90px;
+  top: 15%;
+  width: 68px;
+  height: 68px;
+  animation-delay: 0s;
 }
 
-.butterfly-body::before,
-.butterfly-body::after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  width: 8px;
-  height: 8px;
-  border-top: 1px solid #70402f;
+.butterfly-two {
+  left: -100px;
+  top: 36%;
+  width: 52px;
+  height: 52px;
+  animation-delay: 4s;
 }
 
-.butterfly-body::before {
-  right: 0;
-  transform: rotate(28deg);
-  transform-origin: right bottom;
+.butterfly-three {
+  right: -90px;
+  top: 23%;
+  width: 62px;
+  height: 62px;
+
+  animation-name: butterflyFlyBack;
+  animation-delay: 2s;
 }
 
-.butterfly-body::after {
-  left: 0;
-  transform: rotate(-28deg);
-  transform-origin: left bottom;
+.butterfly-four {
+  right: -90px;
+  top: 58%;
+  width: 48px;
+  height: 48px;
+
+  animation-name: butterflyFlyBack;
+  animation-delay: 8s;
 }
 
-/* Wings */
+/* =========================================================
+   WING FLUTTER
+   Single real image -> subtle folding motion
+========================================================= */
 
-.butterfly-wing {
-  position: absolute;
-  top: 5%;
-  width: 52%;
-  height: 72%;
-  border: 1px solid rgba(185, 147, 90, .68);
-  background:
-    radial-gradient(
-      circle at 60% 45%,
-      rgba(255, 224, 177, .9),
-      rgba(143, 29, 44, .62) 58%,
-      rgba(81, 15, 27, .85)
-    );
-  box-shadow:
-    inset 0 0 7px rgba(255, 238, 197, .35);
+@keyframes butterflyFlutter {
+
+  0%,
+  100% {
+    transform:
+      scaleX(1)
+      scaleY(1)
+      rotate(0deg);
+  }
+
+  18% {
+    transform:
+      scaleX(.88)
+      scaleY(.96)
+      rotate(-2deg);
+  }
+
+  35% {
+    transform:
+      scaleX(.68)
+      scaleY(.91)
+      rotate(2deg);
+  }
+
+  50% {
+    transform:
+      scaleX(.52)
+      scaleY(.88)
+      rotate(0deg);
+  }
+
+  68% {
+    transform:
+      scaleX(.72)
+      scaleY(.93)
+      rotate(-2deg);
+  }
+
+  84% {
+    transform:
+      scaleX(.9)
+      scaleY(.98)
+      rotate(2deg);
+  }
 }
 
-.butterfly-wing-left {
-  left: 0;
-  border-radius: 78% 30% 65% 38%;
-  transform-origin: right center;
-  transform:
-    rotate(-20deg)
-    skewY(7deg);
-  animation: butterflyWingLeft .72s ease-in-out infinite;
-}
+/* =========================================================
+   LEFT → CENTER → RIGHT
+========================================================= */
 
-.butterfly-wing-right {
-  right: 0;
-  border-radius: 30% 78% 38% 65%;
-  transform-origin: left center;
-  transform:
-    rotate(20deg)
-    skewY(-7deg);
-  animation: butterflyWingRight .72s ease-in-out infinite;
-}
+@keyframes butterflyFlyAcross {
 
-/* Fine gold detail */
-
-.butterfly-wing::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(228, 196, 134, .35);
-  border-radius: inherit;
-}
-
-/*
-  Flight path:
-  starts invisible,
-  enters from one side,
-  gently curves,
-  slows near the middle,
-  then continues away.
-
-  The middle portion intentionally becomes slower
-  to create the visual impression of landing near text.
-*/
-
-@keyframes butterflyFlight {
   0% {
     opacity: 0;
     transform:
-      translate3d(-55px, 35px, 0)
-      rotate(var(--butterfly-rotate))
-      scale(.72);
+      translate3d(-30px, 50px, 0)
+      rotate(-8deg)
+      scale(.7);
   }
 
-  8% {
-    opacity: .72;
+  7% {
+    opacity: .95;
   }
 
-  22% {
+  18% {
     transform:
-      translate3d(
-        var(--butterfly-drift),
-        -35px,
-        0
-      )
-      rotate(7deg)
-      scale(.92);
+      translate3d(17vw, -45px, 0)
+      rotate(8deg)
+      scale(.84);
   }
 
-  38% {
+  30% {
     transform:
-      translate3d(
-        calc(var(--butterfly-drift) * -0.45),
-        45px,
-        0
-      )
-      rotate(-6deg)
+      translate3d(31vw, 40px, 0)
+      rotate(-7deg)
+      scale(.95);
+  }
+
+  /* name area approach */
+
+  42% {
+    transform:
+      translate3d(43vw, -8px, 0)
+      rotate(4deg)
       scale(1);
   }
 
-  /* Landing-like pause:
-     movement is deliberately tiny here.
-  */
+  /* hover above name */
 
   47% {
-    opacity: .9;
+    opacity: 1;
     transform:
-      translate3d(
-        calc(var(--butterfly-drift) * 0.12),
-        4px,
-        0
-      )
-      rotate(0deg)
-      scale(1.02);
+      translate3d(48vw, 4px, 0)
+      rotate(-2deg)
+      scale(1.04);
+  }
+
+  51% {
+    transform:
+      translate3d(51vw, -5px, 0)
+      rotate(2deg)
+      scale(1.06);
   }
 
   55% {
-    opacity: .96;
     transform:
-      translate3d(
-        calc(var(--butterfly-drift) * 0.16),
-        0,
-        0
-      )
-      rotate(0deg)
+      translate3d(49vw, 5px, 0)
+      rotate(-1deg)
+      scale(1.03);
+  }
+
+  59% {
+    transform:
+      translate3d(53vw, 0, 0)
+      rotate(2deg)
       scale(1);
   }
 
-  64% {
+  /* fly away */
+
+  68% {
     transform:
-      translate3d(
-        calc(var(--butterfly-drift) * -0.38),
-        -45px,
-        0
-      )
-      rotate(7deg)
-      scale(.96);
+      translate3d(65vw, -35px, 0)
+      rotate(8deg)
+      scale(.94);
   }
 
-  78% {
-    opacity: .72;
+  79% {
     transform:
-      translate3d(
-        var(--butterfly-drift),
-        35px,
-        0
-      )
-      rotate(-9deg)
-      scale(.9);
+      translate3d(80vw, 45px, 0)
+      rotate(-8deg)
+      scale(.84);
   }
 
-  90% {
-    opacity: .45;
+  91% {
+    opacity: .5;
+    transform:
+      translate3d(97vw, -45px, 0)
+      rotate(10deg)
+      scale(.72);
   }
 
   100% {
     opacity: 0;
     transform:
-      translate3d(
-        calc(var(--butterfly-drift) + 90px),
-        -70px,
-        0
-      )
+      translate3d(112vw, 30px, 0)
       rotate(15deg)
-      scale(.65);
+      scale(.62);
   }
 }
 
-@keyframes butterflyLand {
-  0%,
-  38% {
-    transform: translateY(0) rotate(0);
+/* =========================================================
+   RIGHT → CENTER → LEFT
+========================================================= */
+
+@keyframes butterflyFlyBack {
+
+  0% {
+    opacity: 0;
+    transform:
+      translate3d(30px, -40px, 0)
+      rotate(10deg)
+      scale(.7);
+  }
+
+  7% {
+    opacity: .95;
+  }
+
+  19% {
+    transform:
+      translate3d(-17vw, 45px, 0)
+      rotate(-8deg)
+      scale(.84);
+  }
+
+  32% {
+    transform:
+      translate3d(-31vw, -35px, 0)
+      rotate(7deg)
+      scale(.95);
   }
 
   43% {
-    transform: translateY(2px) rotate(-2deg) scale(.98);
+    transform:
+      translate3d(-43vw, 6px, 0)
+      rotate(-4deg)
+      scale(1);
   }
+
+  /* hover */
 
   48% {
-    transform: translateY(1px) rotate(1deg) scale(1.02);
+    opacity: 1;
+    transform:
+      translate3d(-49vw, -3px, 0)
+      rotate(2deg)
+      scale(1.04);
   }
 
-  55% {
-    transform: translateY(2px) rotate(0) scale(1);
+  52% {
+    transform:
+      translate3d(-51vw, 5px, 0)
+      rotate(-2deg)
+      scale(1.06);
   }
 
-  65%,
+  56% {
+    transform:
+      translate3d(-49vw, -4px, 0)
+      rotate(2deg)
+      scale(1.03);
+  }
+
+  60% {
+    transform:
+      translate3d(-52vw, 2px, 0)
+      rotate(-1deg)
+      scale(1);
+  }
+
+  69% {
+    transform:
+      translate3d(-65vw, -40px, 0)
+      rotate(-8deg)
+      scale(.94);
+  }
+
+  80% {
+    transform:
+      translate3d(-80vw, 42px, 0)
+      rotate(8deg)
+      scale(.84);
+  }
+
+  92% {
+    opacity: .5;
+    transform:
+      translate3d(-97vw, -45px, 0)
+      rotate(-11deg)
+      scale(.72);
+  }
+
   100% {
-    transform: translateY(0) rotate(0);
+    opacity: 0;
+    transform:
+      translate3d(-112vw, 25px, 0)
+      rotate(-15deg)
+      scale(.6);
   }
 }
 
-@keyframes butterflyWingLeft {
-  0%,
-  100% {
-    transform:
-      rotate(-20deg)
-      skewY(7deg)
-      scaleY(1);
-  }
-
-  50% {
-    transform:
-      rotate(-7deg)
-      skewY(3deg)
-      scaleY(.42);
-  }
-}
-
-@keyframes butterflyWingRight {
-  0%,
-  100% {
-    transform:
-      rotate(20deg)
-      skewY(-7deg)
-      scaleY(1);
-  }
-
-  50% {
-    transform:
-      rotate(7deg)
-      skewY(-3deg)
-      scaleY(.42);
-  }
-}
-
-/* Keep butterflies elegant on smaller screens */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
   .butterfly-layer {
     z-index: 25;
   }
 
-  .premium-butterfly-flight {
-    transform-origin: center;
+  .real-butterfly {
+    width: 46px;
+    height: 46px;
   }
 
-  .premium-butterfly {
-    transform: scale(.78);
-  }
-
-  .premium-butterfly-flight:nth-child(2),
-  .premium-butterfly-flight:nth-child(5) {
+  .butterfly-two,
+  .butterfly-four {
     display: none;
   }
 }
 
-/* Don't animate for users who request reduced motion */
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .premium-butterfly-flight,
-  .premium-butterfly,
-  .butterfly-wing-left,
-  .butterfly-wing-right {
+  .real-butterfly,
+  .real-butterfly img {
     animation: none !important;
   }
 
-  .premium-butterfly-flight {
-    opacity: .55;
+  .real-butterfly {
+    opacity: .7;
   }
 }
 
@@ -2812,56 +2854,329 @@ select {
 }
 
 /* =========================================================
-   REAL BUTTERFLY IMAGE BACKGROUND
-   Add public/butterfly-bokeh.png to the project
+   REAL BUTTERFLY — NAME AREA FLIGHT
 ========================================================= */
 
-.butterfly-photo-layer {
+.butterfly-layer {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 40;
+  overflow: hidden;
   pointer-events: none;
-
-  background-image:
-    linear-gradient(
-      rgba(35, 5, 12, 0.18),
-      rgba(35, 5, 12, 0.18)
-    ),
-    url("/butterfly-bokeh.png");
-
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-
-  opacity: 0.24;
-  filter: saturate(0.9) contrast(1.05);
-  mix-blend-mode: screen;
-
-  animation: butterflyAtmosphere 16s ease-in-out infinite;
 }
 
-@keyframes butterflyAtmosphere {
-  0%,
+.real-butterfly {
+  position: absolute;
+  width: 58px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+
+  filter:
+    drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 0 7px rgba(185, 147, 90, 0.18));
+
+  will-change: transform, opacity;
+
+  /* realistic gentle flutter */
+  animation:
+    butterflyNameFlight
+    15s
+    cubic-bezier(.42, 0, .58, 1)
+    infinite;
+}
+
+/* Butterfly 1
+   Travels toward the name and slows there
+*/
+.butterfly-one {
+  left: -90px;
+  top: 12%;
+  width: 62px;
+  animation-delay: 0s;
+}
+
+/* Butterfly 2 */
+.butterfly-two {
+  left: -100px;
+  top: 34%;
+  width: 48px;
+  animation-delay: 4s;
+}
+
+/* Butterfly 3 */
+.butterfly-three {
+  right: -100px;
+  top: 20%;
+  width: 54px;
+
+  animation:
+    butterflyNameFlightRight
+    17s
+    cubic-bezier(.42, 0, .58, 1)
+    infinite;
+
+  animation-delay: 2s;
+}
+
+/* Butterfly 4 */
+.butterfly-four {
+  right: -100px;
+  top: 48%;
+  width: 64px;
+
+  animation:
+    butterflyNameFlightRight
+    19s
+    cubic-bezier(.42, 0, .58, 1)
+    infinite;
+
+  animation-delay: 7s;
+}
+
+/* Butterfly 5 */
+.butterfly-five {
+  left: -100px;
+  top: 72%;
+  width: 46px;
+  animation-delay: 10s;
+}
+
+/* =========================================================
+   LEFT → NAME → RIGHT
+========================================================= */
+
+@keyframes butterflyNameFlight {
+
+  /* Enter */
+
+  0% {
+    opacity: 0;
+    transform:
+      translate3d(-30px, 80px, 0)
+      rotate(-12deg)
+      scale(.68);
+  }
+
+  7% {
+    opacity: .95;
+  }
+
+  /* First curve */
+
+  18% {
+    transform:
+      translate3d(18vw, -40px, 0)
+      rotate(9deg)
+      scale(.84);
+  }
+
+  /* Move toward center */
+
+  32% {
+    transform:
+      translate3d(35vw, 35px, 0)
+      rotate(-7deg)
+      scale(.96);
+  }
+
+  /* =====================================================
+     NAME AREA
+     Butterfly reaches the name and slows down
+  ===================================================== */
+
+  43% {
+    transform:
+      translate3d(46vw, -8px, 0)
+      rotate(4deg)
+      scale(1);
+  }
+
+  /* Hover near name */
+
+  48% {
+    opacity: 1;
+    transform:
+      translate3d(49vw, 4px, 0)
+      rotate(-2deg)
+      scale(1.04);
+  }
+
+  52% {
+    transform:
+      translate3d(51vw, -2px, 0)
+      rotate(2deg)
+      scale(1.02);
+  }
+
+  56% {
+    transform:
+      translate3d(48vw, 6px, 0)
+      rotate(-1deg)
+      scale(1);
+  }
+
+  /* =====================================================
+     LEAVES THE NAME
+  ===================================================== */
+
+  65% {
+    transform:
+      translate3d(62vw, -35px, 0)
+      rotate(8deg)
+      scale(.96);
+  }
+
+  76% {
+    transform:
+      translate3d(76vw, 45px, 0)
+      rotate(-7deg)
+      scale(.86);
+  }
+
+  88% {
+    opacity: .65;
+    transform:
+      translate3d(92vw, -55px, 0)
+      rotate(10deg)
+      scale(.75);
+  }
+
   100% {
-    transform: scale(1);
-    opacity: 0.20;
-  }
-
-  50% {
-    transform: scale(1.03);
-    opacity: 0.28;
+    opacity: 0;
+    transform:
+      translate3d(110vw, 30px, 0)
+      rotate(15deg)
+      scale(.62);
   }
 }
+
+/* =========================================================
+   RIGHT → NAME → LEFT
+========================================================= */
+
+@keyframes butterflyNameFlightRight {
+
+  0% {
+    opacity: 0;
+    transform:
+      translate3d(40px, -70px, 0)
+      rotate(12deg)
+      scale(.68);
+  }
+
+  8% {
+    opacity: .92;
+  }
+
+  20% {
+    transform:
+      translate3d(-18vw, 45px, 0)
+      rotate(-8deg)
+      scale(.86);
+  }
+
+  34% {
+    transform:
+      translate3d(-36vw, -30px, 0)
+      rotate(7deg)
+      scale(.96);
+  }
+
+  /* Name area */
+
+  44% {
+    transform:
+      translate3d(-47vw, 8px, 0)
+      rotate(-4deg)
+      scale(1);
+  }
+
+  49% {
+    opacity: 1;
+    transform:
+      translate3d(-50vw, -3px, 0)
+      rotate(2deg)
+      scale(1.04);
+  }
+
+  53% {
+    transform:
+      translate3d(-48vw, 6px, 0)
+      rotate(-2deg)
+      scale(1.01);
+  }
+
+  57% {
+    transform:
+      translate3d(-51vw, 0, 0)
+      rotate(1deg)
+      scale(1);
+  }
+
+  /* Leave */
+
+  66% {
+    transform:
+      translate3d(-65vw, -40px, 0)
+      rotate(-8deg)
+      scale(.94);
+  }
+
+  78% {
+    transform:
+      translate3d(-80vw, 40px, 0)
+      rotate(8deg)
+      scale(.84);
+  }
+
+  90% {
+    opacity: .6;
+    transform:
+      translate3d(-96vw, -50px, 0)
+      rotate(-12deg)
+      scale(.72);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(-112vw, 25px, 0)
+      rotate(-16deg)
+      scale(.6);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
-  .butterfly-photo-layer {
-    opacity: 0.18;
+
+  .butterfly-layer {
+    z-index: 25;
+  }
+
+  .real-butterfly {
+    width: 42px;
+  }
+
+  .butterfly-two,
+  .butterfly-five {
+    display: none;
   }
 }
 
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-  .butterfly-photo-layer {
+
+  .real-butterfly {
     animation: none !important;
+    opacity: .7;
   }
 }
 
